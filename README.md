@@ -48,8 +48,8 @@ var knockClient = new KnockClient(
   new KnockOptions { ApiKey = "sk_12345" });
 
 var identifyUserParams = new Dictionary<string, object>{
-	{ "name", "John Hammond" },
-	{ "email", "jhammond@ingen.net" }
+  { "name", "John Hammond" },
+  { "email", "jhammond@ingen.net" }
 };
 
 var user = await knockClient.Users.Identify("jhammond", identifyUserParams)
@@ -70,7 +70,7 @@ var user = await knockClient.Users.Get("jhammond")
 var knockClient = new KnockClient(
   new KnockOptions { ApiKey = "sk_12345" });
 
-var workflowTrigger = TriggerWorkflow{
+var workflowTrigger = new TriggerWorkflow {
   // list of user ids for who should receive the notif
   Recipients = ["jhammond", "agrant", "imalcolm", "esattler"],
   // user id of who performed the action
@@ -96,7 +96,7 @@ var knockClient = new KnockClient(
   new KnockOptions { ApiKey = "sk_12345" });
 
 // Set preference set for user
-var preferenceSetUpdate = SetPreferenceSet{
+var preferenceSetUpdate = new SetPreferenceSet {
   ChannelTypes = new Dictionary<string, boolean> {
     {"email", false}
   }
@@ -137,9 +137,12 @@ var result = await knockClient.Users.GetChannelData("jhammond", knockApnsChannel
 var knockClient = new KnockClient(
   new KnockOptions { ApiKey = "sk_12345" });
 
-var cancelParams = WorkflowCancel{
-  recipients: [],
-}
+var cancelParams = new CancelWorkflow {
+  // Optional list of recipients to cancel the workflow run for
+  Recipients = ["dnedry"],
+  // The cancellation key that corresponds with the original workflow run
+  CancellationKey = alert.id,
+};
 
-knock.Workflows.cancel("dinosaurs-loose", alert.id, cancelParams)
+var result = await knockClient.Workflows.cancel("dinosaurs-loose", cancelParams);
 ```

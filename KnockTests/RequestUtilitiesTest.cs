@@ -108,7 +108,7 @@
         [Fact]
         public void TestParseURLParameters()
         {
-            var url = "https://api.workos.com/sso/authorize?domain=foo&state=bar";
+            var url = "https://api.knock.app/sso/authorize?domain=foo&state=bar";
             var parsedUrl = RequestUtilities.ParseURLParameters(url);
             var expectedDictionary = new Dictionary<string, string>
             {

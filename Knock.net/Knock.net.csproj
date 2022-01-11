@@ -29,12 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Objects\" />
-    <None Remove="Resources\BulkOperations\" />
-    <None Remove="Resources\Objects\_interfaces\" />
-    <None Remove="Resources\Users\_interfaces\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
@@ -57,16 +51,7 @@
     <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1" PrivateAssets="All" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Resources\Objects\" />
-    <Folder Include="Resources\BulkOperations\" />
-    <Folder Include="Resources\Objects\_interfaces\" />
-    <Folder Include="Resources\Users\_interfaces\" />
-  </ItemGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
   </PropertyGroup>
 </Project>

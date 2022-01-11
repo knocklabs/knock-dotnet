@@ -24,9 +24,16 @@
     <PackOnBuild>true</PackOnBuild>
     <Summary>Knock.net is the official .NET client for the Knock API.</Summary>
     <Title>Knock.net</Title>
-    <ReleaseVersion>0.1.0</ReleaseVersion>
+    <ReleaseVersion>0.1.1</ReleaseVersion>
+    <PackageVersion>0.1.1</PackageVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\Objects\" />
+    <None Remove="Resources\BulkOperations\" />
+    <None Remove="Resources\Objects\_interfaces\" />
+    <None Remove="Resources\Users\_interfaces\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
@@ -50,7 +57,16 @@
     <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Objects\" />
+    <Folder Include="Resources\BulkOperations\" />
+    <Folder Include="Resources\Objects\_interfaces\" />
+    <Folder Include="Resources\Users\_interfaces\" />
+  </ItemGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
   </PropertyGroup>
 </Project>

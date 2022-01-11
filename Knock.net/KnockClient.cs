@@ -31,7 +31,10 @@
             // Initialize resources
             Users = new UsersResource(this);
             Workflows = new WorkflowResource(this);
+            // Preferences is deprecated and will be removed
             Preferences = new PreferencesResource(this);
+            Objects = new ObjectsResource(this);
+            BulkOperations = new BulkOperationsResource(this);
         }
 
         /// <summary>
@@ -70,9 +73,19 @@
         public WorkflowResource Workflows { get; }
 
         /// <summary>
-        /// Access to Preference methods
+        /// Access to Preference methods (deprecated)
         /// </summary>
         public PreferencesResource Preferences { get; }
+
+        /// <summary>
+        /// Access to Object methods
+        /// </summary>
+        public ObjectsResource Objects { get; }
+
+        /// <summary>
+        /// Access to BulkOperations methods
+        /// </summary>
+        public BulkOperationsResource BulkOperations { get; }
 
         /// <summary>
         /// The client used to make HTTP requests to the Knock API.

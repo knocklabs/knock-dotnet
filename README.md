@@ -102,16 +102,16 @@ var preferenceSetUpdate = new SetPreferenceSet {
   }
 };
 
-var result = await knockClient.Preferences.Set("jhammond", preferenceSetUpdate);
+var result = await knockClient.Users.SetPreferences("jhammond", preferenceSetUpdate);
 
 // Set granular channel type preferences
-var result = await knockClient.Preferences.SetChannelType("jhammond", "email", true);
+var result = await knockClient.Users.SetChannelTypePreferences("jhammond", "email", true);
 
 // Set granular workflow preferences
-var result = await knockClient.Preferences.SetWorkflow("jhammond", "dinosaurs-loose", false);
+var result = await knockClient.Users.SetWorkflowPreferences("jhammond", "dinosaurs-loose", false);
 
 // Retrieve preferences
-var preferenceSet = await knockClient.Preferences.get("jhammond");
+var preferenceSet = await knockClient.Users.GetPreferences("jhammond");
 ```
 
 ### Getting and setting channel data

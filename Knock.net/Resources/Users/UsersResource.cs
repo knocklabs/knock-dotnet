@@ -21,6 +21,12 @@ namespace Knock
         /// <param name="client">The knock client</param>
         public UsersResource(KnockClient client) : base(client) { }
 
+
+        /// <summary>
+        /// The default preference set id
+        /// </summary>
+        public const string DefaultPreferenceSetId = "default";
+
         /// <summary>
         /// Returns a user
         /// </summary>
@@ -61,6 +67,26 @@ namespace Knock
         }
 
         /// <summary>
+        /// Bulk identifies multiple users
+        /// </summary>
+        /// <param name="options">Options to pass to the request</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock BulkOperation record.</returns>
+        public async Task<BulkOperation> BulkIdentify(BulkIdentifyUsersOptions options, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/bulk/identify",
+                Method = HttpMethod.Put,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Deletes a user
         /// </summary>
         /// <param name="userId">User unique identifier.</param>
@@ -80,6 +106,28 @@ namespace Knock
         }
 
         /// <summary>
+        /// Bulk deletes multiple users
+        /// </summary>
+        /// <param name="options">Options to pass to the request</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock BulkOperation record.</returns>
+        public async Task<BulkOperation> BulkDelete(BulkDeleteUsersOptions options, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/bulk/identify",
+                Method = HttpMethod.Put,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
+        }
+
+        #region ChannelData
+
+        /// <summary>
         /// Returns the channel data for the user
         /// </summary>
         /// <param name="userId">User unique identifier.</param>
@@ -95,8 +143,6 @@ namespace Knock
                 Path = $"/users/{userId}/channel_data/{channelId}",
                 Method = HttpMethod.Get,
             };
-
-            Console.Write(Client);
 
             return await Client.MakeAPIRequest<ChannelData>(request, cancellationToken);
         }
@@ -122,5 +168,164 @@ namespace Knock
 
             return await Client.MakeAPIRequest<ChannelData>(request, cancellationToken);
         }
+
+        #endregion
+
+        #region Preferences
+
+        /// <summary>
+        /// Returns all preference sets for the user
+        /// </summary>
+        /// <param name="userId">The identifier of the user</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>List of preference sets</returns>
+        public async Task<List<PreferenceSet>> GetAllPreferences(string userId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/preferences",
+                Method = HttpMethod.Get,
+            };
+
+            return await Client.MakeAPIRequest<List<PreferenceSet>>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Returns a single preference set for the user
+        /// </summary>
+        /// <param name="userId">The identifier of the user</param>
+        /// <param name="preferenceSetId">The identifier of the preference set, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>Preference set</returns>
+        public async Task<PreferenceSet> GetPreferences(string userId, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/preferences/{preferenceSetId}",
+                Method = HttpMethod.Get,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets the data onto the preference set
+        /// </summary>
+        /// <param name="userId">The identifier of the user</param>
+        /// <param name="options">The preference set data to set</param>
+        /// <param name="preferenceSetId">An optional preference set id</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>PreferenceSet</returns>
+        public async Task<PreferenceSet> SetPreferences(string userId, SetPreferenceSet options, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/preferences/{preferenceSetId}",
+                Method = HttpMethod.Put,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets the channel type for the preference set
+        /// </summary>
+        /// <param name="userId">The identifier of the user</param>
+        /// <param name="channelType">Type of channel to set</param>
+        /// <param name="subscribed">Boolean to set for the channel type</param>
+        /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>A preference set object</returns>
+        public async Task<PreferenceSet> SetChannelTypePreferences(string userId, string channelType, bool subscribed, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var options = new Dictionary<string, bool>{
+                { "subscribed", subscribed }
+            };
+
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/preferences/{preferenceSetId}/channel_types/{channelType}",
+                Method = HttpMethod.Put,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets the workflow setting for the preference set
+        /// </summary>
+        /// <param name="userId">The identifier of the user</param>
+        /// <param name="workflowKey">The workflow to set preferences for</param>
+        /// <param name="subscribed">Boolean preference setting</param>
+        /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>A preference set object</returns>
+        public async Task<PreferenceSet> SetWorkflowPreferences(string userId, string workflowKey, bool subscribed, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var options = new Dictionary<string, bool>{
+                { "subscribed", subscribed }
+            };
+
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/preferences/{preferenceSetId}/workflows/{workflowKey}",
+                Method = HttpMethod.Put,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets the channel types for the provided workflow in the preference set
+        /// </summary>
+        /// <param name="userId">The identifier of the user</param>
+        /// <param name="workflowKey">The workflow to set preferences for</param>
+        /// <param name="channelTypes">Dictionary of channel type settings</param>
+        /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>A preference set object</returns>
+        public async Task<PreferenceSet> SetWorkflowPreferences(string userId, string workflowKey, Dictionary<string, bool> channelTypes, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/preferences/{preferenceSetId}/workflows/{workflowKey}",
+                Method = HttpMethod.Put,
+                Options = channelTypes,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Bulk sets the preferences for the users provided
+        /// </summary>
+        /// <param name="options">Options to send.</param>
+        /// <param name="preferenceSetId">The preference set id (defaults to "default").</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock BulkOperation entry.</returns>
+        public async Task<BulkOperation> BulkSetPreferences(BulkSetUserPreferencesOptions options, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            // Set the preference set id if not given
+            if (options.Preferences.Id == null)
+            {
+                options.Preferences.Id = preferenceSetId;
+            }
+
+            var request = new KnockRequest
+            {
+                Path = $"/users/bulk/preferences",
+                Method = HttpMethod.Post,
+                Options = options
+            };
+
+            return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
+        }
+
+        #endregion
     }
 }

@@ -12,7 +12,7 @@
         /// A list of recipient ids
         /// </summary>
         [JsonProperty("recipients")]
-        public List<string> Recipients { get; set; }
+        public List<object> Recipients { get; set; }
 
         /// <summary>
         /// The cancellation key for the workflow run

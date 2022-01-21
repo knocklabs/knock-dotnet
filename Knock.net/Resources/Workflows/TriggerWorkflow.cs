@@ -13,14 +13,14 @@
         /// or object references (or a combination of the two).
         /// </summary>
         [JsonProperty("recipients")]
-        public List<Object> Recipients { get; set; }
+        public List<object> Recipients { get; set; }
 
         /// <summary>
         /// The actor to execute the notification on behalf of (either a string,
         /// or an object reference)
         /// </summary>
         [JsonProperty("actor")]
-        public Object Actor { get; set; }
+        public object Actor { get; set; }
 
         /// <summary>
         /// A dictionary of data to pass through

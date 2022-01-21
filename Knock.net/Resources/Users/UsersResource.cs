@@ -125,6 +125,31 @@ namespace Knock
             return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
         }
 
+        /// <summary>
+        /// Merges the user specified with `fromUserId` into the user specified with `userId`.
+        /// </summary>
+        /// <param name="userId">User identifier to merge into.</param>
+        /// <param name="fromUserId">User identifier to merge from.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock User record.</returns>
+        public async Task<User> Merge(string userId, string fromUserId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/merge",
+                Method = HttpMethod.Post,
+                Options = new Dictionary<string, string>
+                {
+                    {"from_user_id", fromUserId}
+                },
+            };
+
+            return await Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+
         #region ChannelData
 
         /// <summary>

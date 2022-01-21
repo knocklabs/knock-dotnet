@@ -9,16 +9,18 @@
     public class TriggerWorkflow : BaseOptions
     {
         /// <summary>
-        /// A list of recipients to execute the workflow for
+        /// A list of recipients to execute the workflow for. Can be a list of strings,
+        /// or object references (or a combination of the two).
         /// </summary>
         [JsonProperty("recipients")]
-        public List<string> Recipients { get; set; }
+        public List<Object> Recipients { get; set; }
 
         /// <summary>
-        /// The actor id
+        /// The actor to execute the notification on behalf of (either a string,
+        /// or an object reference)
         /// </summary>
         [JsonProperty("actor")]
-        public string Actor { get; set; }
+        public Object Actor { get; set; }
 
         /// <summary>
         /// A dictionary of data to pass through

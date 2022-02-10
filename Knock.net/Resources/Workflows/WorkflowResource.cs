@@ -48,7 +48,7 @@ namespace Knock
         public async Task<Response> Cancel(string workflowKey, CancelWorkflow cancelWorkflowOptions, CancellationToken cancellationToken = default) {
             var request = new KnockRequest
             {
-                Path = $"/workflows/{workflowKey}/trigger",
+                Path = $"/workflows/{workflowKey}/cancel",
                 Method = HttpMethod.Post,
                 Options = cancelWorkflowOptions,
             };

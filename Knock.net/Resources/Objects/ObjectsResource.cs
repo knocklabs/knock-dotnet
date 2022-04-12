@@ -164,5 +164,24 @@ namespace Knock
 
             return await Client.MakeAPIRequest<ChannelData>(request, cancellationToken);
         }
+
+        /// <summary>
+        /// Returns a paginated response of the object's messages
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="options">Options filtering and pagination</param>
+        /// <returns>A paginated Message response.</returns>
+        public async Task<Dictionary<string, object>> GetMessages(string collection, string objectId, Dictionary<string, object> options = null)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/messages",
+                Method = HttpMethod.Get,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<Dictionary<string, object>>(request);
+        }
     }
 }

@@ -29,6 +29,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Messages\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
@@ -51,6 +54,9 @@
     <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1" PrivateAssets="All" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Messages\" />
+  </ItemGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

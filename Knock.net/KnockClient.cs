@@ -35,6 +35,7 @@
             Preferences = new PreferencesResource(this);
             Objects = new ObjectsResource(this);
             BulkOperations = new BulkOperationsResource(this);
+            Messages = new MessagesResource(this);
         }
 
         /// <summary>
@@ -86,6 +87,11 @@
         /// Access to BulkOperations methods
         /// </summary>
         public BulkOperationsResource BulkOperations { get; }
+
+        /// <summary>
+        /// Access to Message methods
+        /// </summary>
+        public MessagesResource Messages { get; }
 
         /// <summary>
         /// The client used to make HTTP requests to the Knock API.

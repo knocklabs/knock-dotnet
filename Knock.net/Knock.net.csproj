@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Messages\" />
+    <None Remove="Resources\Activities\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
@@ -56,6 +57,7 @@
 
   <ItemGroup>
     <Folder Include="Resources\Messages\" />
+    <Folder Include="Resources\Activities\" />
   </ItemGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\_stylecop\StyleCopRules.ruleset</CodeAnalysisRuleSet>

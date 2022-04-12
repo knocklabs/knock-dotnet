@@ -34,6 +34,12 @@ namespace Knock
         public string tenant { get; set; }
 
         /// <summary>
+        /// The recipient of the message
+        /// </summary>
+        [JsonProperty("recipient")]
+        public object recipient { get; set; }
+
+        /// <summary>
         /// The status of the message
         /// </summary>
         [JsonProperty("status")]
@@ -70,7 +76,7 @@ namespace Knock
         public string updatedAt { get; set; }
 
         /// <summary>
-        /// The workflow key of the workflow this message belongs to
+        /// Data related to the message
         /// </summary>
         [JsonProperty("data")]
         public Dictionary<string, object> data { get; set; }

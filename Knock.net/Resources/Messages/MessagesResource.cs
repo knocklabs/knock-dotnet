@@ -37,7 +37,7 @@ namespace Knock
         /// </summary>
         /// <param name="messageId">Message unique identifier.</param>
         /// <returns>A Knock MessageContent record.</returns>
-        public async Task<Dictionary<string, object>> GetContent(string messageId)
+        public async Task<MessageContent> GetContent(string messageId)
         {
             var request = new KnockRequest
             {
@@ -45,7 +45,7 @@ namespace Knock
                 Method = HttpMethod.Get,
             };
 
-            return await Client.MakeAPIRequest<Dictionary<string, object>>(request);
+            return await Client.MakeAPIRequest<MessageContent>(request);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Knock
         /// <param name="messageId">Message unique identifier.</param>
         /// <param name="options">Dictionary of params for filtering and pagination</param>
         /// <returns>A paginated Knock MessageEvent response.</returns>
-        public async Task<Dictionary<string, object>> GetEvents(string messageId, Dictionary<string, object> options = null)
+        public async Task<PaginatedResponse<MessageEvent>> GetEvents(string messageId, Dictionary<string, object> options = null)
         {
             var request = new KnockRequest
             {
@@ -63,7 +63,7 @@ namespace Knock
                 Options = options
             };
 
-            return await Client.MakeAPIRequest<Dictionary<string, object>>(request);
+            return await Client.MakeAPIRequest<PaginatedResponse<MessageEvent>>(request);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Knock
         /// <param name="messageId">Message unique identifier.</param>
         /// <param name="options">Dictionary of params for filtering and pagination</param>
         /// <returns>A paginated Knock Activity response.</returns>
-        public async Task<PaginatedResponse<Message>> GetActivities(string messageId, Dictionary<string, object> options = null)
+        public async Task<PaginatedResponse<Activity>> GetActivities(string messageId, Dictionary<string, object> options = null)
         {
             var request = new KnockRequest
             {
@@ -81,7 +81,7 @@ namespace Knock
                 Options = options
             };
 
-            return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request);
+            return await Client.MakeAPIRequest<PaginatedResponse<Activity>>(request);
         }
     }
 }

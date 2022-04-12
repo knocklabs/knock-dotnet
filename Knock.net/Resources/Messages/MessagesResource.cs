@@ -17,6 +17,23 @@ namespace Knock
         public MessagesResource(KnockClient client) : base(client) { }
 
         /// <summary>
+        /// Returns a paginated list of messages
+        /// </summary>
+        /// <param name="options">Options filtering and pagination</param>
+        /// <returns>A paginated Message response.</returns>
+        public async Task<PaginatedResponse<Message>> List(Dictionary<string, object> options = null)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/messages",
+                Method = HttpMethod.Get,
+                Options=options
+            };
+
+            return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request);
+        }
+
+        /// <summary>
         /// Returns a message
         /// </summary>
         /// <param name="messageId">Message unique identifier.</param>

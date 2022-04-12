@@ -72,7 +72,7 @@ namespace Knock
         /// <param name="messageId">Message unique identifier.</param>
         /// <param name="options">Dictionary of params for filtering and pagination</param>
         /// <returns>A paginated Knock Activity response.</returns>
-        public async Task<Dictionary<string, object>> GetActivities(string messageId, Dictionary<string, object> options = null)
+        public async Task<PaginatedResponse<Message>> GetActivities(string messageId, Dictionary<string, object> options = null)
         {
             var request = new KnockRequest
             {
@@ -81,7 +81,7 @@ namespace Knock
                 Options = options
             };
 
-            return await Client.MakeAPIRequest<Dictionary<string, object>>(request);
+            return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request);
         }
     }
 }

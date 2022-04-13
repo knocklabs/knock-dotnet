@@ -49,7 +49,6 @@ namespace Knock
         /// Data related to the activity
         /// </summary>
         [JsonProperty("data")]
-
         public Dictionary<string, object> data { get; set; }
     }
 }

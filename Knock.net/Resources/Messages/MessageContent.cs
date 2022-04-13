@@ -25,7 +25,6 @@ namespace Knock
         /// Data related to the message event
         /// </summary>
         [JsonProperty("data")]
-
         public Dictionary<string, object> data { get; set; }
     }
 }

@@ -351,6 +351,24 @@ namespace Knock
             return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
         }
 
+        /// <summary>
+        /// Returns a paginated response of the user's messages
+        /// </summary>
+        /// <param name="userId">Unique identifier.</param>
+        /// <param name="options">Options filtering and pagination</param>
+        /// <returns>A paginated Message response.</returns>
+        public async Task<PaginatedResponse<Message>> GetMessages(string userId, Dictionary<string, object> options = null)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/messages",
+                Method = HttpMethod.Get,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request);
+        }
+
         #endregion
     }
 }

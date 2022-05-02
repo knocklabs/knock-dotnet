@@ -18,6 +18,11 @@ namespace Knock
         public ObjectsResource(KnockClient client) : base(client) { }
 
         /// <summary>
+        /// The default preference set id
+        /// </summary>
+        public const string DefaultPreferenceSetId = "default";
+
+        /// <summary>
         /// Returns an object in a collection.
         /// </summary>
         /// <param name="collection">Object unique identifier.</param>
@@ -166,6 +171,27 @@ namespace Knock
         }
 
         /// <summary>
+        /// Sets the channel data for the object on the channel provided.
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="channelId">Channel identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>No response.</returns>
+        public async Task<ChannelData> UnsetChannelData(string collection, string objectId, string channelId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/channel_data/{channelId}",
+                Method = HttpMethod.Delete,
+            };
+
+            return await Client.MakeAPIRequest<ChannelData>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Returns a paginated response of the object's messages
         /// </summary>
         /// <param name="collection">Collection the object belongs to.</param>
@@ -183,5 +209,141 @@ namespace Knock
 
             return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request);
         }
+
+        #region Preferences
+
+        /// <summary>
+        /// Returns all preference sets for the object
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>List of preference sets</returns>
+        public async Task<List<PreferenceSet>> GetAllPreferences(string collection, string objectId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/preferences",
+                Method = HttpMethod.Get,
+            };
+
+            return await Client.MakeAPIRequest<List<PreferenceSet>>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Returns a single preference set for the object
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="preferenceSetId">The identifier of the preference set, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>Preference set</returns>
+        public async Task<PreferenceSet> GetPreferences(string collection, string objectId, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/preferences/{preferenceSetId}",
+                Method = HttpMethod.Get,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets the data onto the preference set
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="options">The preference set data to set</param>
+        /// <param name="preferenceSetId">An optional preference set id</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>PreferenceSet</returns>
+        public async Task<PreferenceSet> SetPreferences(string collection, string objectId, SetPreferenceSet options, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/preferences/{preferenceSetId}",
+                Method = HttpMethod.Put,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets the channel type for the preference set
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="channelType">Type of channel to set</param>
+        /// <param name="subscribed">Boolean to set for the channel type</param>
+        /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>A preference set object</returns>
+        public async Task<PreferenceSet> SetChannelTypePreferences(string collection, string objectId, string channelType, bool subscribed, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var options = new Dictionary<string, bool>{
+                { "subscribed", subscribed }
+            };
+
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/preferences/{preferenceSetId}/channel_types/{channelType}",
+                Method = HttpMethod.Put,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets the workflow setting for the preference set
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="workflowKey">The workflow to set preferences for</param>
+        /// <param name="subscribed">Boolean preference setting</param>
+        /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>A preference set object</returns>
+        public async Task<PreferenceSet> SetWorkflowPreferences(string collection, string objectId, string workflowKey, bool subscribed, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var options = new Dictionary<string, bool>{
+                { "subscribed", subscribed }
+            };
+
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/preferences/{preferenceSetId}/workflows/{workflowKey}",
+                Method = HttpMethod.Put,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets the channel types for the provided workflow in the preference set
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="workflowKey">The workflow to set preferences for</param>
+        /// <param name="channelTypes">Dictionary of channel type settings</param>
+        /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>A preference set object</returns>
+        public async Task<PreferenceSet> SetWorkflowPreferences(string collection, string objectId, string workflowKey, Dictionary<string, object> channelTypes, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/preferences/{preferenceSetId}/workflows/{workflowKey}",
+                Method = HttpMethod.Put,
+                Options = channelTypes,
+            };
+
+            return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        #endregion
     }
 }

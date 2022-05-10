@@ -194,6 +194,26 @@ namespace Knock
             return await Client.MakeAPIRequest<ChannelData>(request, cancellationToken);
         }
 
+        /// <summary>
+        /// Unsets the channel data for the user on the channel provided.
+        /// </summary>
+        /// <param name="userId">User unique identifier.</param>
+        /// <param name="channelId">Channel identifier.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>No response.</returns>
+        public async Task<ChannelData> UnsetChannelData(string userId, string channelId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/users/{userId}/channel_data/{channelId}",
+                Method = HttpMethod.Delete,
+            };
+
+            return await Client.MakeAPIRequest<ChannelData>(request, cancellationToken);
+        }
+
         #endregion
 
         #region Preferences

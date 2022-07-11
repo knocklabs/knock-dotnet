@@ -34,6 +34,7 @@
             // Preferences is deprecated and will be removed
             Preferences = new PreferencesResource(this);
             Objects = new ObjectsResource(this);
+            Tenants = new TenantsResource(this);
             BulkOperations = new BulkOperationsResource(this);
             Messages = new MessagesResource(this);
         }
@@ -82,6 +83,11 @@
         /// Access to Object methods
         /// </summary>
         public ObjectsResource Objects { get; }
+
+        /// <summary>
+        /// Access to Tenant methods
+        /// </summary>
+        public TenantsResource Tenants { get; }
 
         /// <summary>
         /// Access to BulkOperations methods

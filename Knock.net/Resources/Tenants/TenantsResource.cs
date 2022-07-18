@@ -95,7 +95,5 @@ namespace Knock
 
             return await Client.MakeAPIRequest<Tenant>(request, cancellationToken);
         }
-
-        #endregion
     }
 }

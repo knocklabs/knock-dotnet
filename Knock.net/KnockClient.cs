@@ -159,7 +159,7 @@
 
             requestMessage.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("utf-8"));
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.ApiKey);
-            
+
 
             requestMessage.Headers.TryAddWithoutValidation("User-Agent", userAgentString);
             if (request.KnockHeaders != null)

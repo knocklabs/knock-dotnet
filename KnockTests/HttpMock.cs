@@ -1,5 +1,6 @@
 ﻿namespace KnockTests
 {
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
@@ -31,6 +32,17 @@
                     ItExpr.Is<HttpRequestMessage>(m =>
                         m.Method == method &&
                         m.RequestUri.AbsolutePath == path),
+                    ItExpr.IsAny<CancellationToken>());
+        }
+
+        public void AssertRequestHasHeader(string header, string value)
+        {
+            this.MockHandler.Protected()
+                .Verify(
+                    "SendAsync",
+                    Times.Once(),
+                    ItExpr.Is<HttpRequestMessage>(m =>
+                        m.Headers.GetValues(header).Contains(value)),
                     ItExpr.IsAny<CancellationToken>());
         }
 

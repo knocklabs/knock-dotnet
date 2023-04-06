@@ -25,8 +25,9 @@ namespace Knock
         /// <param name="workflowKey">The key of the workflow to trigger</param>
         /// <param name="triggerWorkflowOptions">The data for the trigger</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <param name="options">Optional parameters for the request</param>
         /// <returns>A response dictionary</returns>
-        public async Task<Response> Trigger(string workflowKey, TriggerWorkflow triggerWorkflowOptions, CancellationToken cancellationToken = default)
+        public async Task<Response> Trigger(string workflowKey, TriggerWorkflow triggerWorkflowOptions, MethodOptions options = null, CancellationToken cancellationToken = default)
         {
             var request = new KnockRequest
             {
@@ -34,6 +35,14 @@ namespace Knock
                 Method = HttpMethod.Post,
                 Options = triggerWorkflowOptions,
             };
+
+            if (options != null)
+            {
+                request.KnockHeaders = new Dictionary<string, string>();
+                if (options.IdempotencyKey != null) {
+                    request.KnockHeaders.Add("Idempotency-Key", options.IdempotencyKey);
+                }
+            }
 
             return await Client.MakeAPIRequest<Response>(request, cancellationToken);
         }

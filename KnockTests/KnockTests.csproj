@@ -7,7 +7,7 @@
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <ReleaseVersion>0.1.8</ReleaseVersion>
+    <ReleaseVersion>0.1.9</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>

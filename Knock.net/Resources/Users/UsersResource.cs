@@ -379,7 +379,7 @@ namespace Knock
         /// <returns>A paginated Message response.</returns>
         public async Task<PaginatedResponse<Message>> GetMessages(string userId, Dictionary<string, object> options = null)
         {
-            if (options.ContainsKey("trigger_data"))
+            if (options != null && options.ContainsKey("trigger_data"))
             {
                 var triggerData = (Dictionary<string, object>) options["trigger_data"];
                 var triggerDataAsString = Newtonsoft.Json.JsonConvert.SerializeObject(triggerData);

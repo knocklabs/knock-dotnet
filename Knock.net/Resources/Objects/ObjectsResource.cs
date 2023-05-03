@@ -218,6 +218,26 @@ namespace Knock
             return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request);
         }
 
+        /// <summary>
+        /// Returns a paginated response of the object's schedules
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="options">Options filtering and pagination</param>
+        /// <returns>A paginated Schedule response.</returns>
+        public async Task<PaginatedResponse<Schedule>> GetSchedules(string collection, string objectId, Dictionary<string, object> options = null)
+        {
+
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/schedules",
+                Method = HttpMethod.Get,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PaginatedResponse<Schedule>>(request);
+        }
+
         #region Preferences
 
         /// <summary>

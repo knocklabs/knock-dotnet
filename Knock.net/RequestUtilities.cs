@@ -126,6 +126,14 @@
                         result.Add(new KeyValuePair<string, string>(key, s));
                         break;
 
+                    case int i:
+                        result.Add(new KeyValuePair<string, string>(key, i.ToString()));
+                        break;
+
+                    case long l:
+                        result.Add(new KeyValuePair<string, string>(key, l.ToString()));
+                        break;
+
                     case IEnumerable e:
                         foreach (object elem in e)
                         {

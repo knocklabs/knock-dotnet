@@ -65,6 +65,89 @@ namespace Knock
             return await Client.MakeAPIRequest<Response>(request, cancellationToken);
         }
 
+        /// <summary>
+        /// Create schedules for given workflow and recipients
+        /// </summary>
+        /// <param name="workflowKey">The key of the workflow</param>
+        /// <param name="createSchedulesOptions">Schedules creation attributes</param>
+        /// <returns>List of created schedules</returns>
+        public async Task<List<Schedule>> CreateSchedules(string workflowKey, CreateSchedules createSchedulesOptions)
+        {
+            createSchedulesOptions.Workflow = workflowKey;
 
+            var request = new KnockRequest
+            {
+                Path = $"/schedules",
+                Method = HttpMethod.Post,
+                Options = createSchedulesOptions,
+            };
+
+            return await Client.MakeAPIRequest<List<Schedule>>(request);
+        }
+
+        /// <summary>
+        /// Update schedules for given workflow and recipients
+        /// </summary>
+        /// <param name="scheduleIds">Schedule ids</param>
+        /// <param name="updateSchedulesOptions">Schedules update attributes</param>
+        /// <returns>List of updated schedules</returns>
+        public async Task<List<Schedule>> UpdateSchedules(List<String> scheduleIds, UpdateSchedules updateSchedulesOptions)
+        {
+            updateSchedulesOptions.ScheduleIds = scheduleIds;
+
+            var request = new KnockRequest
+            {
+                Path = $"/schedules",
+                Method = HttpMethod.Put,
+                Options = updateSchedulesOptions,
+            };
+
+            return await Client.MakeAPIRequest<List<Schedule>>(request);
+        }
+
+        /// <summary>
+        /// Deletes schedules
+        /// </summary>
+        /// <param name="scheduleIds">Ids from schedules to be deleted</param>
+        /// <returns>List of deleted schedules</returns>
+        public async Task<List<Schedule>> DeleteSchedules(List<String> scheduleIds)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/schedules",
+                Method = HttpMethod.Delete,
+                Options = new Dictionary<String, List<String>> {
+                    { "schedule_ids", scheduleIds}
+                }
+
+            };
+
+            return await Client.MakeAPIRequest<List<Schedule>>(request);
+        }
+
+        /// <summary>
+        /// Returns a paginated list of schedules for workflow
+        /// </summary>
+        /// <param name="workflowKey">Workflow key</param>
+        /// <param name="options">Options filtering and pagination</param>
+        /// <returns>A paginated Schedule response.</returns>
+        public async Task<PaginatedResponse<Schedule>> ListSchedules(String workflowKey, Dictionary<string, object> options = null)
+        {
+            if (options == null)
+            {
+                options = new Dictionary<string, object> { { "workflow", workflowKey } };
+            } else {
+                options.Add("workflow", workflowKey);
+            }
+
+            var request = new KnockRequest
+            {
+                Path = $"/schedules",
+                Method = HttpMethod.Get,
+                Options = options
+            };
+
+            return await Client.MakeAPIRequest<PaginatedResponse<Schedule>>(request);
+        }
     }
 }

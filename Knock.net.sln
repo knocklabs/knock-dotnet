@@ -38,6 +38,6 @@ Global
 		$0.CSharpFormattingPolicy = $3
 		$3.scope = text/x-csharp
 		$0.StandardHeader = $4
-		version = 0.1.9
+		version = 0.1.10
 	EndGlobalSection
 EndGlobal

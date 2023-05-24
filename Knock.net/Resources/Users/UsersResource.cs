@@ -79,7 +79,7 @@ namespace Knock
             var request = new KnockRequest
             {
                 Path = $"/users/bulk/identify",
-                Method = HttpMethod.Put,
+                Method = HttpMethod.Post,
                 Options = options,
             };
 
@@ -117,8 +117,8 @@ namespace Knock
         {
             var request = new KnockRequest
             {
-                Path = $"/users/bulk/identify",
-                Method = HttpMethod.Put,
+                Path = $"/users/bulk/delete",
+                Method = HttpMethod.Post,
                 Options = options,
             };
 

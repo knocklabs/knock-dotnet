@@ -52,6 +52,12 @@ namespace Knock
         public string Tenant { get; set; }
 
         /// <summary>
+        /// The datetime where the last occurrence of the schedule happened
+        /// </summary>
+        [JsonProperty("last_occurrence_at")]
+        public string LastOccurrenceAt { get; set; }
+
+        /// <summary>
         /// The datetime where the next occurrence of the schedule is happening
         /// </summary>
         [JsonProperty("next_occurrence_at")]

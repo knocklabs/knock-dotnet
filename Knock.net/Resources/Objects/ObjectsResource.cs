@@ -118,7 +118,7 @@ namespace Knock
         {
             var request = new KnockRequest
             {
-                Path = $"/objects/{collection}/bulk/set",
+                Path = $"/objects/{collection}/bulk/delete",
                 Method = HttpMethod.Post,
                 Options = options,
             };

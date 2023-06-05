@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Knock
 {
@@ -388,6 +389,91 @@ namespace Knock
             };
 
             return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Returns paginated object subscriptions
+        /// </summary>
+        /// <param name="collection">Collection name.</param>
+        /// <param name="objectId">Object unique identifier.</param>
+        /// <param name="options">Options for pagination</param>
+        /// <returns>A paginated list of ObjectSunscription records.</returns>
+        public async Task<PaginatedResponse<ObjectSubscription>> ListSubscriptions(string collection, string objectId, Dictionary<string, object> options = null)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/subscriptions",
+                Method = HttpMethod.Get,
+                Options = options
+            };
+
+            return await Client.MakeAPIRequest<PaginatedResponse<ObjectSubscription>>(request);
+        }
+
+        /// <summary>
+        /// Returns paginated object subscriptions
+        /// </summary>
+        /// <param name="collection">Collection name.</param>
+        /// <param name="objectId">Object unique identifier.</param>
+        /// <param name="options">Options for pagination</param>
+        /// <returns>A paginated list of ObjectSunscription records.</returns>
+        public async Task<PaginatedResponse<ObjectSubscription>> GetSubscriptions(string collection, string objectId, Dictionary<string, object> options = null)
+        {
+            if (options != null)
+            {
+                options.Add("mode", "recipient");
+            } else
+            {
+                options = new Dictionary<string, object>();
+                options.Add("mode", "recipient");
+            };
+
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/subscriptions",
+                Method = HttpMethod.Get,
+                Options = options
+            };
+
+            return await Client.MakeAPIRequest<PaginatedResponse<ObjectSubscription>>(request);
+        }
+
+        /// <summary>
+        /// Adds subscriptions to object for recipients
+        /// </summary>
+        /// <param name="collection">object collection</param>
+        /// <param name="objectId">object collection</param>
+        /// <param name="addSubscriptionsOptions">ObjectSubscription creation parameters</param>
+        /// <returns>List of created schedules</returns>
+        public async Task<List<ObjectSubscription>> AddSubscriptions(string collection, string objectId, AddSubscriptions addSubscriptionsOptions)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/subscriptions",
+                Method = HttpMethod.Post,
+                Options = addSubscriptionsOptions,
+            };
+
+            return await Client.MakeAPIRequest<List<ObjectSubscription>>(request);
+        }
+
+        /// <summary>
+        /// Deletes subscriptions for recipients
+        /// </summary>
+        /// <param name="collection">object collection</param>
+        /// <param name="objectId">object collection</param>
+        /// <param name="deleteSubscriptionOptions">ObjectSubscription deletion parameters</param>
+        /// <returns>List of created schedules</returns>
+        public async Task<List<ObjectSubscription>> DeleteSubscriptions(string collection, string objectId, DeleteSubscriptions deleteSubscriptionOptions)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/subscriptions",
+                Method = HttpMethod.Delete,
+                Options = deleteSubscriptionOptions,
+            };
+
+            return await Client.MakeAPIRequest<List<ObjectSubscription>>(request);
         }
 
         #endregion

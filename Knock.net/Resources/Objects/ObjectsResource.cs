@@ -23,9 +23,27 @@ namespace Knock
         public const string DefaultPreferenceSetId = "default";
 
         /// <summary>
+        /// Returns a paginated list of objects in collection
+        /// </summary>
+        /// <param name="collection">Collection name.</param>
+        /// <param name="options">Pagination options.</param>
+        /// <returns>A Knock Object record.</returns>
+        public async Task<PaginatedResponse<Object>> List(string collection, Dictionary<string, object> options = null)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}",
+                Method = HttpMethod.Get,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<PaginatedResponse<Object>>(request);
+        }
+
+        /// <summary>
         /// Returns an object in a collection.
         /// </summary>
-        /// <param name="collection">Object unique identifier.</param>
+        /// <param name="collection">Collection name.</param>
         /// <param name="objectId">Object unique identifier.</param>
         /// <param name="cancellationToken">
         /// An optional token to cancel the request.

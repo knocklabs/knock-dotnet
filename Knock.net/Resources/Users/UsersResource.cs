@@ -37,12 +37,28 @@ namespace Knock
         /// <returns>A Knock User record.</returns>
         public async Task<User> Get(string userId, CancellationToken cancellationToken = default)
         {
-            var request = new KnockRequest {
+            var request = new KnockRequest
+            {
                 Path = $"/users/{userId}",
                 Method = HttpMethod.Get,
             };
 
             return await Client.MakeAPIRequest<User>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Returns a paginated list of users
+        /// </summary>
+        /// <returns>Paginate list of users.</returns>
+        public async Task<PaginatedResponse<User>> List(Dictionary<string, object> options = null)
+        {
+            var request = new KnockRequest {
+                Path = $"/users",
+                Method = HttpMethod.Get,
+                Options = options
+            };
+
+            return await Client.MakeAPIRequest<PaginatedResponse<User>>(request);
         }
 
         /// <summary>

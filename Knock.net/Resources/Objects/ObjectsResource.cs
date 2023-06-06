@@ -416,7 +416,7 @@ namespace Knock
         /// <param name="collection">Collection name.</param>
         /// <param name="objectId">Object unique identifier.</param>
         /// <param name="options">Options for pagination</param>
-        /// <returns>A paginated list of ObjectSunscription records.</returns>
+        /// <returns>A paginated list of object subscription records.</returns>
         public async Task<PaginatedResponse<ObjectSubscription>> GetSubscriptions(string collection, string objectId, Dictionary<string, object> options = null)
         {
             if (options != null)
@@ -444,7 +444,7 @@ namespace Knock
         /// <param name="collection">object collection</param>
         /// <param name="objectId">object collection</param>
         /// <param name="addSubscriptionsOptions">ObjectSubscription creation parameters</param>
-        /// <returns>List of created schedules</returns>
+        /// <returns>List of created subscriptions</returns>
         public async Task<List<ObjectSubscription>> AddSubscriptions(string collection, string objectId, AddSubscriptions addSubscriptionsOptions)
         {
             var request = new KnockRequest
@@ -463,7 +463,7 @@ namespace Knock
         /// <param name="collection">object collection</param>
         /// <param name="objectId">object collection</param>
         /// <param name="deleteSubscriptionOptions">ObjectSubscription deletion parameters</param>
-        /// <returns>List of created schedules</returns>
+        /// <returns>List of created subscriptions</returns>
         public async Task<List<ObjectSubscription>> DeleteSubscriptions(string collection, string objectId, DeleteSubscriptions deleteSubscriptionOptions)
         {
             var request = new KnockRequest

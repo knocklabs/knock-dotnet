@@ -458,6 +458,24 @@ namespace Knock
         }
 
         /// <summary>
+        /// Bulk adds subscriptions for a set of recipients to a set of objects in a collection.
+        /// </summary>
+        /// <param name="collection">The collection that the objects should be in</param>
+        /// <param name="options">Options for the bulk add action</param>
+        /// <returns>A Knock BulkOperation record.</returns>
+        public async Task<BulkOperation> BulkSet(string collection, BulkAddSubscriptionsOptions options)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/bulk/subscriptions/add",
+                Method = HttpMethod.Post,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<BulkOperation>(request);
+        }
+
+        /// <summary>
         /// Deletes subscriptions for recipients
         /// </summary>
         /// <param name="collection">object collection</param>

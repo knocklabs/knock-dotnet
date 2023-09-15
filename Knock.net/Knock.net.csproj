@@ -25,8 +25,8 @@
     <PackOnBuild>true</PackOnBuild>
     <Summary>Knock.net is the official .NET client for the Knock API.</Summary>
     <Title>Knock.net</Title>
-    <ReleaseVersion>0.1.12</ReleaseVersion>
-    <PackageVersion>0.1.12</PackageVersion>
+    <ReleaseVersion>0.1.13</ReleaseVersion>
+    <PackageVersion>0.1.13</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>

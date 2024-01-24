@@ -32,10 +32,12 @@
 
 
         /// <summary>
-        /// An optional tenant identifier
+        /// An optional reference to the tenant for when the workflow runs. This
+        /// can be A) a tenant id, B) an object reference without the collection, or 
+        /// C) a dictionary with data to identify a tenant.
         /// </summary>
         [JsonProperty("tenant")]
-        public string Tenant { get; set; }
+        public object Tenant { get; set; }
 
         /// <summary>
         /// A cancellation key

@@ -37,10 +37,12 @@
 
 
         /// <summary>
-        /// An optional tenant identifier
+        /// An optional reference to the tenant related to the schedule. This
+        /// can be A) a tenant id, B) an object reference without the collection, or 
+        /// C) a dictionary with data to identify a tenant.
         /// </summary>
         [JsonProperty("tenant")]
-        public string Tenant { get; set; }
+        public object Tenant { get; set; }
 
         /// <summary>
         /// Date from where the schedule must start

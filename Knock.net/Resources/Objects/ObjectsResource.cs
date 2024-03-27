@@ -396,8 +396,8 @@ namespace Knock
         /// </summary>
         /// <param name="collection">Collection name.</param>
         /// <param name="objectId">Object unique identifier.</param>
-        /// <param name="options">Options for pagination</param>
-        /// <returns>A paginated list of ObjectSunscription records.</returns>
+        /// <param name="options">Options for filtering and pagination.</param>
+        /// <returns>A paginated list of ObjectSubscription records.</returns>
         public async Task<PaginatedResponse<ObjectSubscription>> ListSubscriptions(string collection, string objectId, Dictionary<string, object> options = null)
         {
             var request = new KnockRequest

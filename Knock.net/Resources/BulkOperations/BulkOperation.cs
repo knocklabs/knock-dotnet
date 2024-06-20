@@ -33,6 +33,24 @@
         public string ProcessedRows { get; set; }
 
         /// <summary>
+        /// The number of rows that have been processed successfully
+        /// </summary>
+        [JsonProperty("success_count")]
+        public int SuccessCount { get; set; }
+
+        /// <summary>
+        /// The number of rows that had errors processing
+        /// </summary>
+        [JsonProperty("error_count")]
+        public int ErrorCount { get; set; }
+
+        /// <summary>
+        /// Information about the errors that occurred during processing
+        /// </summary>
+        [JsonProperty("error_items")]
+        public List<Dictionary<string, object>> ErrorItems { get; set; }
+
+        /// <summary>
         /// The current status of the operation, one of: `queued`, `processing`, `completed`, `failed`
         /// </summary>
         [JsonProperty("status")]
@@ -55,5 +73,7 @@
         /// </summary>
         [JsonProperty("failed_at")]
         public string FailedAt { get; set; }
+
+
     }
 }

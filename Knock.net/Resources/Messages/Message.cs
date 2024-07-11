@@ -46,6 +46,12 @@ namespace Knock
         public string status { get; set; }
 
         /// <summary>
+        /// The engagement statuses of the message
+        /// </summary>
+        [JsonProperty("engagement_statuses")]
+        public List<string> engagementStatuses { get; set; }
+
+        /// <summary>
         /// The date this message was read (as an ISO8601 datetime string)
         /// </summary>
         [JsonProperty("read_at")]
@@ -64,16 +70,28 @@ namespace Knock
         public string archivedAt { get; set; }
 
         /// <summary>
-        /// The date this message was inserted at (as an ISO8601 datetime string)
+        /// The date this message was inserted (as an ISO8601 datetime string)
         /// </summary>
         [JsonProperty("inserted_at")]
         public string insertedAt { get; set; }
 
         /// <summary>
-        /// The date this message was updated at (as an ISO8601 datetime string)
+        /// The date this message was updated (as an ISO8601 datetime string)
         /// </summary>
         [JsonProperty("updated_at")]
         public string updatedAt { get; set; }
+
+        /// <summary>
+        /// The date this message was interacted (as an ISO8601 datetime string)
+        /// </summary>
+        [JsonProperty("interacted_at")]
+        public string interactedAt { get; set; }
+
+        /// <summary>
+        /// The date this message was clicked (as an ISO8601 datetime string)
+        /// </summary>
+        [JsonProperty("link_clicked_at")]
+        public string linkClickedAt { get; set; }
 
         /// <summary>
         /// Data related to the message

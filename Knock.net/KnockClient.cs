@@ -42,7 +42,7 @@
         /// <summary>
         /// Describes the .NET SDK version.
         /// </summary>
-        public static string SdkVersion => "0.1.0";
+        public static string SdkVersion => "0.2.0";
 
         /// <summary>
         /// Default timeout for HTTP requests.
@@ -143,10 +143,12 @@
             CancellationToken cancellationToken = default)
         {
             var response = await MakeRawAPIRequest(request, cancellationToken).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
 
             var reader = new StreamReader(
                 await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
             var data = await reader.ReadToEndAsync().ConfigureAwait(false);
+
             return RequestUtilities.FromJson<T>(data);
         }
 

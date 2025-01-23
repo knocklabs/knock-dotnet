@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// JSON to set preference set preference options
@@ -12,18 +13,18 @@
         /// Workflow preferences to set
         /// </summary>
         [JsonProperty("workflows")]
-        public Dictionary<string, object> Workflows { get; set; }
+        public Dictionary<string, JToken> Workflows { get; set; }
 
         /// <summary>
         /// Channel type preferences to set
         /// </summary>
         [JsonProperty("channel_types")]
-        public Dictionary<string, object> ChannelTypes { get; set; }
+        public Dictionary<string, JToken> ChannelTypes { get; set; }
 
         /// <summary>
         /// Category prferences to set
         /// </summary>
         [JsonProperty("categories")]
-        public Dictionary<string, object> Categories { get; set; }
+        public Dictionary<string, JToken> Categories { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Params to trigger a workflow run
@@ -28,7 +29,7 @@
         /// A dictionary of data to pass through
         /// </summary>
         [JsonProperty("data")]
-        public Dictionary<string, object> Data { get; set; }
+        public JToken Data { get; set; }
 
 
         /// <summary>

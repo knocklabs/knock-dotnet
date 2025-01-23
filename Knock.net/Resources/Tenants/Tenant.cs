@@ -1,7 +1,7 @@
 ﻿namespace Knock
 {
-    using System.Collections.Generic;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Contains information about a Knock Tenant record.
@@ -18,7 +18,7 @@
         /// The data associated
         /// </summary>
         [JsonProperty("properties")]
-        public Dictionary<string, object> Properties { get; set; }
+        public JToken Properties { get; set; }
 
         /// <summary>
         /// The created at date for this tenant (as an ISO8601 datetime string)

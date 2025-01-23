@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// A PreferenceSet object in Knock
@@ -18,19 +19,19 @@
         /// A dictionary of workflow preferences
         /// </summary>
         [JsonProperty("workflows")]
-        public Dictionary<string, object> Workflows { get; set; }
+        public Dictionary<string, JToken> Workflows { get; set; }
 
         /// <summary>
         /// A dictionary of channel type preferences
         /// </summary>
         [JsonProperty("channel_types")]
-        public Dictionary<string, object> ChannelTypes { get; set; }
+        public Dictionary<string, JToken> ChannelTypes { get; set; }
 
 
         /// <summary>
         /// A dictionary of category preferences
         /// </summary>
         [JsonProperty("categories")]
-        public Dictionary<string, object> Categories { get; set; }
+        public Dictionary<string, JToken> Categories { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Knock
 {
-    using System.Collections.Generic;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Contains information about a Knock ChannelData record.
@@ -18,6 +18,6 @@
         /// The data associated
         /// </summary>
         [JsonProperty("data")]
-        public Dictionary<string, object> Data { get; set; }
+        public JToken Data { get; set; }
     }
 }

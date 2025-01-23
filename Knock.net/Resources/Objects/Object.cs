@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Contains information about a Knock Object record.
@@ -24,7 +25,7 @@
         /// The data associated
         /// </summary>
         [JsonProperty("properties")]
-        public Dictionary<string, object> Data { get; set; }
+        public JToken Data { get; set; }
 
         /// <summary>
         /// The created at date for this object (as an ISO8601 datetime string)

@@ -189,7 +189,7 @@
             builder.Append(ApiBaseURL);
             builder.Append(request.Path);
 
-            if (request.Method != HttpMethod.Post && options != null)
+            if (request.Method == HttpMethod.Get && options != null)
             {
                 var queryParameters = RequestUtilities.CreateQueryString(options);
                 if (queryParameters != null && queryParameters.Length > 0)

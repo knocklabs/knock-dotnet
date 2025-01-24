@@ -20,8 +20,8 @@
     <SignAssembly>True</SignAssembly>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <VersionPrefix>0.1.0</VersionPrefix>
-    <Version>0.1.0</Version>
+    <VersionPrefix>0.2.1</VersionPrefix>
+    <Version>0.2.1</Version>
     <PackOnBuild>true</PackOnBuild>
     <Summary>Knock.net is the official .NET client for the Knock API.</Summary>
     <Title>Knock.net</Title>

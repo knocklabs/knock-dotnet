@@ -42,7 +42,7 @@
         /// <summary>
         /// Describes the .NET SDK version.
         /// </summary>
-        public static string SdkVersion => "0.2.0";
+        public static string SdkVersion => "0.2.1";
 
         /// <summary>
         /// Default timeout for HTTP requests.
@@ -189,7 +189,7 @@
             builder.Append(ApiBaseURL);
             builder.Append(request.Path);
 
-            if (request.Method != HttpMethod.Post && options != null)
+            if (request.Method == HttpMethod.Get && options != null)
             {
                 var queryParameters = RequestUtilities.CreateQueryString(options);
                 if (queryParameters != null && queryParameters.Length > 0)

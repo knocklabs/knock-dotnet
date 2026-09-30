@@ -451,7 +451,7 @@ namespace Knock
             {
                 options = new Dictionary<string, object>();
                 options.Add("mode", "recipient");
-            };
+            }
 
             var request = new KnockRequest
             {

@@ -1,39 +1,98 @@
 name: Publish package
+
 on:
   release:
-    types: [created]
-jobs:
-  build:
-    env:
-      BUILD_CONFIG: "Release"
-      SOLUTION: "Knock.net.sln"
+    types: [published]
+  # Pull requests run every step except the push, so packaging problems surface before a release.
+  pull_request:
 
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  PROJECT: Knock.net/Knock.net.csproj
+
+jobs:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set Version
-        id: set_version
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const noRef = context.ref.replace('refs/tags/', '')
-            const noPrefix = noRef.replace('v', '')
-            core.setOutput('version', noPrefix)
-
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.0.5
-
-      - name: Restore dependencies
-        run: nuget restore $SOLUTION
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      - name: Build
-        run: dotnet build $SOLUTION --configuration $BUILD_CONFIG -p:Version=${{steps.set_version.outputs.version}} --no-restore
+      - name: Check version
+        id: version
+        env:
+          IS_RELEASE: ${{ github.event_name == 'release' }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          package_version=$(grep -oP '(?<=<PackageVersion>)[^<]+' "$PROJECT")
+          sdk_version=$(grep -oP 'SdkVersion => "\K[^"]+' Knock.net/KnockClient.cs)
+          echo "PackageVersion: $package_version, SdkVersion: $sdk_version"
 
-      - name: Publish
-        run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+          if [ "$package_version" != "$sdk_version" ]; then
+            echo "::error::PackageVersion ($package_version) does not match KnockClient.SdkVersion ($sdk_version)"
+            exit 1
+          fi
+
+          if [ "$IS_RELEASE" = "true" ] && [ "${TAG#v}" != "$package_version" ]; then
+            echo "::error::Release tag $TAG does not match PackageVersion $package_version"
+            exit 1
+          fi
+
+          # NuGet versions are immutable, so pushing an existing version always fails.
+          if curl -sf https://api.nuget.org/v3-flatcontainer/knock.net/index.json \
+            | jq -e --arg v "$package_version" '.versions | index($v)' > /dev/null; then
+            if [ "$IS_RELEASE" = "true" ]; then
+              echo "::error::Knock.net $package_version is already published on NuGet"
+              exit 1
+            fi
+            echo "::warning::Knock.net $package_version is already published on NuGet; bump the version before releasing"
+          fi
+
+          echo "version=$package_version" >> "$GITHUB_OUTPUT"
+
+      # GeneratePackageOnBuild packs the multi-target project before the net461 build exists (NU5026).
+      - name: Pack
+        run: >
+          dotnet pack "$PROJECT"
+          --configuration Release
+          -p:Version=${{ steps.version.outputs.version }}
+          -p:GeneratePackageOnBuild=false
+          --output artifacts
+
+      - name: Check package contents
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          package="artifacts/Knock.net.$VERSION.nupkg"
+          test -f "$package"
+          test -f "artifacts/Knock.net.$VERSION.snupkg"
+          contents=$(unzip -l "$package")
+          for file in lib/netstandard2.0/Knock.net.dll lib/net461/Knock.net.dll; do
+            if ! grep -q "$file" <<< "$contents"; then
+              echo "::error::$package is missing $file"
+              exit 1
+            fi
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nuget-package
+          path: artifacts/
+
+      - name: Push to NuGet
+        if: github.event_name == 'release'
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "::error::The NUGET_API_KEY secret is not set"
+            exit 1
+          fi
+          dotnet nuget push "artifacts/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json

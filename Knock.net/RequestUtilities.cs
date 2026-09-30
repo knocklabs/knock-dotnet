@@ -88,6 +88,22 @@
         }
 
         /// <summary>
+        /// Serializes a `trigger_data` filter into the JSON string the Knock API
+        /// expects as a query parameter.
+        /// </summary>
+        /// <param name="options">Query options that may contain `trigger_data`.</param>
+        /// <returns>The same options, with `trigger_data` serialized.</returns>
+        public static Dictionary<string, object> SerializeTriggerData(Dictionary<string, object> options)
+        {
+            if (options != null && options.TryGetValue("trigger_data", out var triggerData) && !(triggerData is string))
+            {
+                options["trigger_data"] = JsonConvert.SerializeObject(triggerData);
+            }
+
+            return options;
+        }
+
+        /// <summary>
         /// Parses query parameters from a URL into a dictionary.
         /// </summary>
         /// <param name="url">URL to parse.</param>
@@ -132,6 +148,10 @@
 
                     case long l:
                         result.Add(new KeyValuePair<string, string>(key, l.ToString()));
+                        break;
+
+                    case bool b:
+                        result.Add(new KeyValuePair<string, string>(key, b ? "true" : "false"));
                         break;
 
                     case IEnumerable e:

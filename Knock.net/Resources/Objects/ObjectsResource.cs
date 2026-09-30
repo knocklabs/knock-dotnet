@@ -219,19 +219,11 @@ namespace Knock
         /// <returns>A paginated Message response.</returns>
         public async Task<PaginatedResponse<Message>> GetMessages(string collection, string objectId, Dictionary<string, object> options = null)
         {
-            if (options != null && options.ContainsKey("trigger_data"))
-            {
-                var triggerData = (Dictionary<string, object>) options["trigger_data"];
-                var triggerDataAsString = Newtonsoft.Json.JsonConvert.SerializeObject(triggerData);
-                options.Remove("trigger_data");
-                options.Add("trigger_data", triggerDataAsString);
-            }
-
             var request = new KnockRequest
             {
                 Path = $"/objects/{collection}/{objectId}/messages",
                 Method = HttpMethod.Get,
-                Options = options,
+                Options = RequestUtilities.SerializeTriggerData(options),
             };
 
             return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request);

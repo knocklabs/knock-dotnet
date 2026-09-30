@@ -15,7 +15,7 @@ env:
   PROJECT: Knock.net/Knock.net.csproj
 
 jobs:
-  publish:
+  package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -86,13 +86,40 @@ jobs:
           name: nuget-package
           path: artifacts/
 
-      - name: Push to NuGet
-        if: github.event_name == 'release'
+  push:
+    needs: package
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Trusted publishing: the GitHub OIDC token is exchanged for a short-lived NuGet API key.
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: nuget-package
+          path: artifacts
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Check NuGet user
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          NUGET_USER: ${{ secrets.NUGET_USER }}
         run: |
-          if [ -z "$NUGET_API_KEY" ]; then
-            echo "::error::The NUGET_API_KEY secret is not set"
+          if [ -z "$NUGET_USER" ]; then
+            echo "::error::The NUGET_USER secret (the nuget.org profile name that owns the trusted publishing policy) is not set"
             exit 1
           fi
-          dotnet nuget push "artifacts/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
+
+      # The temporary API key is valid for one hour, so request it immediately before pushing.
+      - name: NuGet login
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to NuGet
+        run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json

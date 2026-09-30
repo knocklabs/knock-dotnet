@@ -47,6 +47,25 @@
         }
 
         [Fact]
+        public void TestCreateQueryStringEncodesNestedObjects()
+        {
+            var options = new Dictionary<string, object>
+            {
+                {
+                    "query_options", new Dictionary<string, object>
+                    {
+                        { "limit", 10 },
+                        { "types", new List<string> { "public_channel" } },
+                        { "nested", new Dictionary<string, object> { { "key", "value" } } },
+                    }
+                },
+            };
+
+            var query = RequestUtilities.CreateQueryString(options);
+            Assert.Equal("query_options[limit]=10&query_options[types][]=public_channel&query_options[nested][key]=value", query);
+        }
+
+        [Fact]
         public void TestSerializeTriggerData()
         {
             var options = new Dictionary<string, object>

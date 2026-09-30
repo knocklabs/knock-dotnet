@@ -10,6 +10,7 @@
     using System.Net.Http.Headers;
     using System.Text;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Helper utilities when issuing HTTP requests.
@@ -154,6 +155,11 @@
                         result.Add(new KeyValuePair<string, string>(key, b ? "true" : "false"));
                         break;
 
+                    case JObject o:
+                        var nested = FlattenQueryParameters(o.ToObject<IDictionary<string, object>>());
+                        result.AddRange(nested.Select(n => new KeyValuePair<string, string>(NestKey(key, n.Key), n.Value)));
+                        break;
+
                     case IEnumerable e:
                         foreach (object elem in e)
                         {
@@ -177,6 +183,14 @@
             }
 
             return result;
+        }
+
+        private static string NestKey(string parentKey, string childKey)
+        {
+            var bracketIndex = childKey.IndexOf('[');
+            return bracketIndex < 0
+                ? $"{parentKey}[{childKey}]"
+                : $"{parentKey}[{childKey.Substring(0, bracketIndex)}]{childKey.Substring(bracketIndex)}";
         }
     }
 }

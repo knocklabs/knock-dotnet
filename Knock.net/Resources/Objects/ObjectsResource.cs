@@ -28,8 +28,11 @@ namespace Knock
         /// </summary>
         /// <param name="collection">Collection name.</param>
         /// <param name="options">Pagination options.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
         /// <returns>A Knock Object record.</returns>
-        public async Task<PaginatedResponse<Object>> List(string collection, Dictionary<string, object> options = null)
+        public async Task<PaginatedResponse<Object>> List(string collection, Dictionary<string, object> options = null, CancellationToken cancellationToken = default)
         {
             var request = new KnockRequest
             {
@@ -38,7 +41,7 @@ namespace Knock
                 Options = options,
             };
 
-            return await Client.MakeAPIRequest<PaginatedResponse<Object>>(request);
+            return await Client.MakeAPIRequest<PaginatedResponse<Object>>(request, cancellationToken);
         }
 
         /// <summary>
@@ -216,8 +219,9 @@ namespace Knock
         /// <param name="collection">Collection the object belongs to.</param>
         /// <param name="objectId">Unique identifier.</param>
         /// <param name="options">Options filtering and pagination</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>A paginated Message response.</returns>
-        public async Task<PaginatedResponse<Message>> GetMessages(string collection, string objectId, Dictionary<string, object> options = null)
+        public async Task<PaginatedResponse<Message>> GetMessages(string collection, string objectId, Dictionary<string, object> options = null, CancellationToken cancellationToken = default)
         {
             var request = new KnockRequest
             {
@@ -226,7 +230,7 @@ namespace Knock
                 Options = RequestUtilities.SerializeTriggerData(options),
             };
 
-            return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request);
+            return await Client.MakeAPIRequest<PaginatedResponse<Message>>(request, cancellationToken);
         }
 
         /// <summary>
@@ -235,10 +239,10 @@ namespace Knock
         /// <param name="collection">Collection the object belongs to.</param>
         /// <param name="objectId">Unique identifier.</param>
         /// <param name="options">Options filtering and pagination</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>A paginated Schedule response.</returns>
-        public async Task<PaginatedResponse<Schedule>> GetSchedules(string collection, string objectId, Dictionary<string, object> options = null)
+        public async Task<PaginatedResponse<Schedule>> GetSchedules(string collection, string objectId, Dictionary<string, object> options = null, CancellationToken cancellationToken = default)
         {
-
             var request = new KnockRequest
             {
                 Path = $"/objects/{collection}/{objectId}/schedules",
@@ -246,7 +250,7 @@ namespace Knock
                 Options = options,
             };
 
-            return await Client.MakeAPIRequest<PaginatedResponse<Schedule>>(request);
+            return await Client.MakeAPIRequest<PaginatedResponse<Schedule>>(request, cancellationToken);
         }
 
         #region Preferences
@@ -307,6 +311,25 @@ namespace Knock
             };
 
             return await Client.MakeAPIRequest<PreferenceSet>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Unsets (deletes) a preference set for the object
+        /// </summary>
+        /// <param name="collection">Collection the object belongs to.</param>
+        /// <param name="objectId">Unique identifier.</param>
+        /// <param name="preferenceSetId">The identifier of the preference set, defaults to "default"</param>
+        /// <param name="cancellationToken">An optional token to cancel the request</param>
+        /// <returns>No response.</returns>
+        public async Task UnsetPreferences(string collection, string objectId, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/{objectId}/preferences/{preferenceSetId}",
+                Method = HttpMethod.Delete,
+            };
+
+            await Client.MakeAPIRequest(request, cancellationToken);
         }
 
         /// <summary>
@@ -392,8 +415,11 @@ namespace Knock
         /// <param name="collection">Collection name.</param>
         /// <param name="objectId">Object unique identifier.</param>
         /// <param name="options">Options for filtering and pagination.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
         /// <returns>A paginated list of ObjectSubscription records.</returns>
-        public async Task<PaginatedResponse<ObjectSubscription>> ListSubscriptions(string collection, string objectId, Dictionary<string, object> options = null)
+        public async Task<PaginatedResponse<ObjectSubscription>> ListSubscriptions(string collection, string objectId, Dictionary<string, object> options = null, CancellationToken cancellationToken = default)
         {
             var request = new KnockRequest
             {
@@ -402,7 +428,7 @@ namespace Knock
                 Options = options
             };
 
-            return await Client.MakeAPIRequest<PaginatedResponse<ObjectSubscription>>(request);
+            return await Client.MakeAPIRequest<PaginatedResponse<ObjectSubscription>>(request, cancellationToken);
         }
 
         /// <summary>
@@ -411,8 +437,11 @@ namespace Knock
         /// <param name="collection">Collection name.</param>
         /// <param name="objectId">Object unique identifier.</param>
         /// <param name="options">Options for pagination</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
         /// <returns>A paginated list of object subscription records.</returns>
-        public async Task<PaginatedResponse<ObjectSubscription>> GetSubscriptions(string collection, string objectId, Dictionary<string, object> options = null)
+        public async Task<PaginatedResponse<ObjectSubscription>> GetSubscriptions(string collection, string objectId, Dictionary<string, object> options = null, CancellationToken cancellationToken = default)
         {
             if (options != null)
             {
@@ -430,7 +459,7 @@ namespace Knock
                 Options = options
             };
 
-            return await Client.MakeAPIRequest<PaginatedResponse<ObjectSubscription>>(request);
+            return await Client.MakeAPIRequest<PaginatedResponse<ObjectSubscription>>(request, cancellationToken);
         }
 
         /// <summary>
@@ -439,8 +468,11 @@ namespace Knock
         /// <param name="collection">object collection</param>
         /// <param name="objectId">object collection</param>
         /// <param name="addSubscriptionsOptions">ObjectSubscription creation parameters</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
         /// <returns>List of created subscriptions</returns>
-        public async Task<List<ObjectSubscription>> AddSubscriptions(string collection, string objectId, AddSubscriptions addSubscriptionsOptions)
+        public async Task<List<ObjectSubscription>> AddSubscriptions(string collection, string objectId, AddSubscriptions addSubscriptionsOptions, CancellationToken cancellationToken = default)
         {
             var request = new KnockRequest
             {
@@ -449,7 +481,7 @@ namespace Knock
                 Options = addSubscriptionsOptions,
             };
 
-            return await Client.MakeAPIRequest<List<ObjectSubscription>>(request);
+            return await Client.MakeAPIRequest<List<ObjectSubscription>>(request, cancellationToken);
         }
 
         /// <summary>
@@ -458,7 +490,22 @@ namespace Knock
         /// <param name="collection">The collection that the objects should be in</param>
         /// <param name="options">Options for the bulk add action</param>
         /// <returns>A Knock BulkOperation record.</returns>
+        [Obsolete("This method is misnamed. Use BulkAddSubscriptions")]
         public async Task<BulkOperation> BulkSet(string collection, BulkAddSubscriptionsOptions options)
+        {
+            return await BulkAddSubscriptions(collection, options);
+        }
+
+        /// <summary>
+        /// Bulk adds subscriptions for a set of recipients to a set of objects in a collection.
+        /// </summary>
+        /// <param name="collection">The collection that the objects should be in</param>
+        /// <param name="options">Options for the bulk add action</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock BulkOperation record.</returns>
+        public async Task<BulkOperation> BulkAddSubscriptions(string collection, BulkAddSubscriptionsOptions options, CancellationToken cancellationToken = default)
         {
             var request = new KnockRequest
             {
@@ -467,7 +514,28 @@ namespace Knock
                 Options = options,
             };
 
-            return await Client.MakeAPIRequest<BulkOperation>(request);
+            return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Bulk deletes subscriptions for a set of recipients from a set of objects in a collection.
+        /// </summary>
+        /// <param name="collection">The collection that the objects are in</param>
+        /// <param name="options">Options for the bulk delete action</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock BulkOperation record.</returns>
+        public async Task<BulkOperation> BulkDeleteSubscriptions(string collection, BulkDeleteSubscriptionsOptions options, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/objects/{collection}/bulk/subscriptions/delete",
+                Method = HttpMethod.Post,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
         }
 
         /// <summary>
@@ -476,8 +544,11 @@ namespace Knock
         /// <param name="collection">object collection</param>
         /// <param name="objectId">object collection</param>
         /// <param name="deleteSubscriptionOptions">ObjectSubscription deletion parameters</param>
-        /// <returns>List of created subscriptions</returns>
-        public async Task<List<ObjectSubscription>> DeleteSubscriptions(string collection, string objectId, DeleteSubscriptions deleteSubscriptionOptions)
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>List of deleted subscriptions</returns>
+        public async Task<List<ObjectSubscription>> DeleteSubscriptions(string collection, string objectId, DeleteSubscriptions deleteSubscriptionOptions, CancellationToken cancellationToken = default)
         {
             var request = new KnockRequest
             {
@@ -486,7 +557,7 @@ namespace Knock
                 Options = deleteSubscriptionOptions,
             };
 
-            return await Client.MakeAPIRequest<List<ObjectSubscription>>(request);
+            return await Client.MakeAPIRequest<List<ObjectSubscription>>(request, cancellationToken);
         }
 
         #endregion

@@ -22,6 +22,55 @@
         }
 
         [Fact]
+        public void TestCreateQueryStringEncodesBooleans()
+        {
+            var options = new Dictionary<string, object>
+            {
+                { "create_audience", true },
+                { "has_tenant", false },
+            };
+
+            var query = RequestUtilities.CreateQueryString(options);
+            Assert.Equal("create_audience=true&has_tenant=false", query);
+        }
+
+        [Fact]
+        public void TestCreateQueryStringEncodesLists()
+        {
+            var options = new Dictionary<string, object>
+            {
+                { "tenant_ids", new List<string> { "t1", "t2" } },
+            };
+
+            var query = RequestUtilities.CreateQueryString(options);
+            Assert.Equal("tenant_ids[]=t1&tenant_ids[]=t2", query);
+        }
+
+        [Fact]
+        public void TestSerializeTriggerData()
+        {
+            var options = new Dictionary<string, object>
+            {
+                { "trigger_data", new Dictionary<string, object> { { "type", "trex" } } },
+            };
+
+            var result = RequestUtilities.SerializeTriggerData(options);
+            Assert.Equal("{\"type\":\"trex\"}", result["trigger_data"]);
+        }
+
+        [Fact]
+        public void TestSerializeTriggerDataLeavesStringsAndNullsAlone()
+        {
+            var options = new Dictionary<string, object>
+            {
+                { "trigger_data", "{\"type\":\"trex\"}" },
+            };
+
+            Assert.Equal("{\"type\":\"trex\"}", RequestUtilities.SerializeTriggerData(options)["trigger_data"]);
+            Assert.Null(RequestUtilities.SerializeTriggerData(null));
+        }
+
+        [Fact]
         public void TestCreateHttpContent()
         {
             var options = new FakeOptions

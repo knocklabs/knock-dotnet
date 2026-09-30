@@ -1,12 +1,15 @@
 ﻿namespace KnockTests
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using Knock;
     using Moq;
     using Moq.Protected;
+    using Newtonsoft.Json.Linq;
 
     public class HttpMock
     {
@@ -22,6 +25,14 @@
         public Mock<HttpClientHandler> MockHandler { get; }
 
         public HttpClient HttpClient { get; }
+
+        public HttpRequestMessage LastRequest { get; private set; }
+
+        public string LastRequestBody { get; private set; }
+
+        public string LastRequestQuery => Uri.UnescapeDataString(this.LastRequest.RequestUri.Query);
+
+        public JObject LastRequestJson => JObject.Parse(this.LastRequestBody);
 
         public void AssertRequestWasMade(HttpMethod method, string path)
         {
@@ -78,7 +89,22 @@
                         m.Method == method &&
                         m.RequestUri.AbsolutePath == path),
                     ItExpr.IsAny<CancellationToken>())
+                .Callback<HttpRequestMessage, CancellationToken>((request, _) =>
+                {
+                    this.LastRequest = request;
+                    this.LastRequestBody = request.Content?.ReadAsStringAsync().Result;
+                })
                 .ReturnsAsync(responseMessage);
+        }
+
+        public void MockJsonResponse(HttpMethod method, string path, object response)
+        {
+            this.MockResponse(method, path, HttpStatusCode.OK, RequestUtilities.ToJsonString(response));
+        }
+
+        public void MockNoContentResponse(HttpMethod method, string path)
+        {
+            this.MockResponse(method, path, HttpStatusCode.NoContent, string.Empty);
         }
 
         public void MockResponseWithAuthorizationHeader(

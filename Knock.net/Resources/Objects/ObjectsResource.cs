@@ -446,7 +446,8 @@ namespace Knock
             if (options != null)
             {
                 options.Add("mode", "recipient");
-            } else
+            }
+            else
             {
                 options = new Dictionary<string, object>();
                 options.Add("mode", "recipient");

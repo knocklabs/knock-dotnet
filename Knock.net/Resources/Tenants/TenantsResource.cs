@@ -31,7 +31,7 @@ namespace Knock
             {
                 Path = $"/tenants",
                 Method = HttpMethod.Get,
-                Options=options
+                Options = options
             };
 
             return await Client.MakeAPIRequest<PaginatedResponse<Tenant>>(request, cancellationToken);

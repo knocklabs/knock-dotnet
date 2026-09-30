@@ -57,7 +57,8 @@ namespace Knock
         /// <returns>Paginate list of users.</returns>
         public async Task<PaginatedResponse<User>> List(Dictionary<string, object> options = null, CancellationToken cancellationToken = default)
         {
-            var request = new KnockRequest {
+            var request = new KnockRequest
+            {
                 Path = $"/users",
                 Method = HttpMethod.Get,
                 Options = options

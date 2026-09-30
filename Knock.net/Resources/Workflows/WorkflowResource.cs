@@ -39,7 +39,8 @@ namespace Knock
             if (options != null)
             {
                 request.KnockHeaders = new Dictionary<string, string>();
-                if (options.IdempotencyKey != null) {
+                if (options.IdempotencyKey != null)
+                {
                     request.KnockHeaders.Add("Idempotency-Key", options.IdempotencyKey);
                 }
             }
@@ -54,7 +55,8 @@ namespace Knock
         /// <param name="cancelWorkflowOptions">The information about the cancellation</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>Response dictionary</returns>
-        public async Task<Response> Cancel(string workflowKey, CancelWorkflow cancelWorkflowOptions, CancellationToken cancellationToken = default) {
+        public async Task<Response> Cancel(string workflowKey, CancelWorkflow cancelWorkflowOptions, CancellationToken cancellationToken = default)
+        {
             var request = new KnockRequest
             {
                 Path = $"/workflows/{workflowKey}/cancel",

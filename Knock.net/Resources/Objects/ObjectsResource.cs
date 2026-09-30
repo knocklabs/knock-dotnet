@@ -319,6 +319,7 @@ namespace Knock
         /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>A preference set object</returns>
+        [Obsolete("The granular preference endpoints are deprecated. Use SetPreferences with PersistenceStrategy = \"merge\".")]
         public async Task<PreferenceSet> SetChannelTypePreferences(string collection, string objectId, string channelType, bool subscribed, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
         {
             var options = new Dictionary<string, bool>{
@@ -345,6 +346,7 @@ namespace Knock
         /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>A preference set object</returns>
+        [Obsolete("The granular preference endpoints are deprecated. Use SetPreferences with PersistenceStrategy = \"merge\".")]
         public async Task<PreferenceSet> SetWorkflowPreferences(string collection, string objectId, string workflowKey, bool subscribed, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
         {
             var options = new Dictionary<string, bool>{
@@ -371,6 +373,7 @@ namespace Knock
         /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>A preference set object</returns>
+        [Obsolete("The granular preference endpoints are deprecated. Use SetPreferences with PersistenceStrategy = \"merge\".")]
         public async Task<PreferenceSet> SetWorkflowPreferences(string collection, string objectId, string workflowKey, Dictionary<string, object> channelTypes, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
         {
             var request = new KnockRequest

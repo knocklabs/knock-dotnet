@@ -32,5 +32,17 @@
         /// </summary>
         [JsonProperty("categories")]
         public Dictionary<string, object> Categories { get; set; }
+
+        /// <summary>
+        /// A dictionary of per-channel preferences
+        /// </summary>
+        [JsonProperty("channels")]
+        public Dictionary<string, object> Channels { get; set; }
+
+        /// <summary>
+        /// Whether the recipient is subscribed to commercial communications
+        /// </summary>
+        [JsonProperty("commercial_subscribed")]
+        public object CommercialSubscribed { get; set; }
     }
 }

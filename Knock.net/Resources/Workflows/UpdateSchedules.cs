@@ -49,5 +49,11 @@
         /// </summary>
         [JsonProperty("scheduled_at")]
         public string ScheduledAt { get; set; }
+
+        /// <summary>
+        /// Date when the schedule must stop running
+        /// </summary>
+        [JsonProperty("ending_at")]
+        public string EndingAt { get; set; }
     }
 }

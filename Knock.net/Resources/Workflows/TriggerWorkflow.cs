@@ -44,5 +44,11 @@
         /// </summary>
         [JsonProperty("cancellation_key")]
         public string CancellationKey { get; set; }
+
+        /// <summary>
+        /// Optional settings for the workflow run, e.g. `is_commercial`.
+        /// </summary>
+        [JsonProperty("settings")]
+        public Dictionary<string, object> Settings { get; set; }
     }
 }

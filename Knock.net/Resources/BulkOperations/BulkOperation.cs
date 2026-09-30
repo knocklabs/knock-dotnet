@@ -74,6 +74,23 @@
         [JsonProperty("failed_at")]
         public string FailedAt { get; set; }
 
+        /// <summary>
+        /// The date the operation was created (as an ISO8601 datetime string)
+        /// </summary>
+        [JsonProperty("inserted_at")]
+        public string InsertedAt { get; set; }
+
+        /// <summary>
+        /// The date the operation was last updated (as an ISO8601 datetime string)
+        /// </summary>
+        [JsonProperty("updated_at")]
+        public string UpdatedAt { get; set; }
+
+        /// <summary>
+        /// The API path to poll for the operation's progress
+        /// </summary>
+        [JsonProperty("progress_path")]
+        public string ProgressPath { get; set; }
 
     }
 }

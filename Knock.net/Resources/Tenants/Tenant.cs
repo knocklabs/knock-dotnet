@@ -15,6 +15,18 @@
         public string Id { get; set; }
 
         /// <summary>
+        /// The name of the tenant
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// The settings for the tenant, including branding and preference set
+        /// </summary>
+        [JsonProperty("settings")]
+        public Dictionary<string, object> Settings { get; set; }
+
+        /// <summary>
         /// The data associated
         /// </summary>
         [JsonProperty("properties")]

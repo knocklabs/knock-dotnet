@@ -104,5 +104,47 @@ namespace Knock
         /// </summary>
         [JsonProperty("source")]
         public Dictionary<string, object> source { get; set; }
+
+        /// <summary>
+        /// The actors of the message
+        /// </summary>
+        [JsonProperty("actors")]
+        public List<object> actors { get; set; }
+
+        /// <summary>
+        /// The channel the message was sent through
+        /// </summary>
+        [JsonProperty("channel")]
+        public Dictionary<string, object> channel { get; set; }
+
+        /// <summary>
+        /// The date this message was clicked (as an ISO8601 datetime string)
+        /// </summary>
+        [JsonProperty("clicked_at")]
+        public string clickedAt { get; set; }
+
+        /// <summary>
+        /// Metadata related to the message
+        /// </summary>
+        [JsonProperty("metadata")]
+        public Dictionary<string, object> metadata { get; set; }
+
+        /// <summary>
+        /// The date this message is scheduled to be sent (as an ISO8601 datetime string)
+        /// </summary>
+        [JsonProperty("scheduled_at")]
+        public string scheduledAt { get; set; }
+
+        /// <summary>
+        /// A snapshot of the recipient at the time the message was generated
+        /// </summary>
+        [JsonProperty("recipient_snapshot")]
+        public Dictionary<string, object> recipientSnapshot { get; set; }
+
+        /// <summary>
+        /// The key of the workflow that generated the message (deprecated, use source instead)
+        /// </summary>
+        [JsonProperty("workflow")]
+        public string workflow { get; set; }
     }
 }

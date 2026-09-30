@@ -25,5 +25,23 @@
         /// </summary>
         [JsonProperty("categories")]
         public Dictionary<string, object> Categories { get; set; }
+
+        /// <summary>
+        /// Per-channel preferences to set
+        /// </summary>
+        [JsonProperty("channels")]
+        public Dictionary<string, object> Channels { get; set; }
+
+        /// <summary>
+        /// Whether the recipient is subscribed to commercial communications
+        /// </summary>
+        [JsonProperty("commercial_subscribed")]
+        public object CommercialSubscribed { get; set; }
+
+        /// <summary>
+        /// How to persist the preferences, one of: `merge`, `replace` (the default)
+        /// </summary>
+        [JsonProperty("__persistence_strategy__")]
+        public string PersistenceStrategy { get; set; }
     }
 }

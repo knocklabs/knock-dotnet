@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  SOLUTION: Knock.net.sln
+
+jobs:
+  lint:
+    name: Lint and audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore $SOLUTION
+
+      - name: Check formatting
+        run: dotnet format $SOLUTION --verify-no-changes --no-restore
+
+      # StyleCop analyzers and TreatWarningsAsErrors make the build itself the lint step.
+      - name: Build
+        run: dotnet build $SOLUTION --configuration Release --no-restore
+
+      - name: Check for vulnerable packages
+        run: |
+          dotnet list $SOLUTION package --vulnerable --include-transitive | tee vulnerable.txt
+          if grep -q "has the following vulnerable packages" vulnerable.txt; then
+            echo "::error::Vulnerable NuGet packages found"
+            exit 1
+          fi
+
+  test:
+    name: Test
+    # Windows runs every test target framework, including net461 on the .NET Framework.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            3.1.x
+            8.0.x
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION }}
+
+      - name: Build
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-build --verbosity normal

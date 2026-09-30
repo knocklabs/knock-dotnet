@@ -39,6 +39,12 @@
             Tenants = new TenantsResource(this);
             BulkOperations = new BulkOperationsResource(this);
             Messages = new MessagesResource(this);
+            Schedules = new SchedulesResource(this);
+            Audiences = new AudiencesResource(this);
+            WorkflowRecipientRuns = new WorkflowRecipientRunsResource(this);
+            Channels = new ChannelsResource(this);
+            Providers = new ProvidersResource(this);
+            Integrations = new IntegrationsResource(this);
         }
 
         /// <summary>
@@ -100,6 +106,36 @@
         /// Access to Message methods
         /// </summary>
         public MessagesResource Messages { get; }
+
+        /// <summary>
+        /// Access to Schedule methods
+        /// </summary>
+        public SchedulesResource Schedules { get; }
+
+        /// <summary>
+        /// Access to Audience methods
+        /// </summary>
+        public AudiencesResource Audiences { get; }
+
+        /// <summary>
+        /// Access to Workflow Recipient Run methods
+        /// </summary>
+        public WorkflowRecipientRunsResource WorkflowRecipientRuns { get; }
+
+        /// <summary>
+        /// Access to Channel methods
+        /// </summary>
+        public ChannelsResource Channels { get; }
+
+        /// <summary>
+        /// Access to chat Provider (Slack, Microsoft Teams) methods
+        /// </summary>
+        public ProvidersResource Providers { get; }
+
+        /// <summary>
+        /// Access to reverse ETL Integration (Census, Hightouch) methods
+        /// </summary>
+        public IntegrationsResource Integrations { get; }
 
         /// <summary>
         /// The client used to make HTTP requests to the Knock API.

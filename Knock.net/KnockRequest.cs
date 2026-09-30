@@ -20,6 +20,11 @@
         public object Options { get; set; }
 
         /// <summary>
+        /// Parameters encoded into the query string, regardless of the HTTP method.
+        /// </summary>
+        public object QueryParams { get; set; }
+
+        /// <summary>
         /// The path of the Knock API request.
         /// </summary>
         public string Path { get; set; }

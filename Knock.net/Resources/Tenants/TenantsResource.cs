@@ -31,7 +31,7 @@ namespace Knock
             {
                 Path = $"/tenants",
                 Method = HttpMethod.Get,
-                Options=options
+                Options = options
             };
 
             return await Client.MakeAPIRequest<PaginatedResponse<Tenant>>(request, cancellationToken);
@@ -57,6 +57,27 @@ namespace Knock
         }
 
         /// <summary>
+        /// Returns an tenant
+        /// </summary>
+        /// <param name="tenantId">Tenant unique identifier.</param>
+        /// <param name="options">Query options, e.g. `resolve_full_preference_settings`.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock Tenant record.</returns>
+        public async Task<Tenant> Get(string tenantId, Dictionary<string, object> options, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/tenants/{tenantId}",
+                Method = HttpMethod.Get,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<Tenant>(request, cancellationToken);
+        }
+
+        /// <summary>
         /// Sets an tenant
         /// </summary>
         /// <param name="tenantId">Unique identifier.</param>
@@ -75,6 +96,72 @@ namespace Knock
             };
 
             return await Client.MakeAPIRequest<Tenant>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sets an tenant
+        /// </summary>
+        /// <param name="tenantId">Unique identifier.</param>
+        /// <param name="tenantData">Dictionary of params</param>
+        /// <param name="queryOptions">Query options, e.g. `resolve_full_preference_settings`.</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock Tenant record.</returns>
+        public async Task<Tenant> Set(string tenantId, Dictionary<string, object> tenantData, Dictionary<string, object> queryOptions, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/tenants/{tenantId}",
+                Method = HttpMethod.Put,
+                Options = tenantData,
+                QueryParams = queryOptions,
+            };
+
+            return await Client.MakeAPIRequest<Tenant>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Bulk sets (upserts) multiple tenants
+        /// </summary>
+        /// <param name="options">Options for the bulk set</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock BulkOperation record.</returns>
+        public async Task<BulkOperation> BulkSet(BulkSetTenantsOptions options, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/tenants/bulk/set",
+                Method = HttpMethod.Post,
+                Options = options,
+            };
+
+            return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
+        }
+
+        /// <summary>
+        /// Bulk deletes multiple tenants
+        /// </summary>
+        /// <param name="tenantIds">The ids of the tenants to delete</param>
+        /// <param name="cancellationToken">
+        /// An optional token to cancel the request.
+        /// </param>
+        /// <returns>A Knock BulkOperation record.</returns>
+        public async Task<BulkOperation> BulkDelete(List<string> tenantIds, CancellationToken cancellationToken = default)
+        {
+            var request = new KnockRequest
+            {
+                Path = $"/tenants/bulk/delete",
+                Method = HttpMethod.Post,
+                QueryParams = new Dictionary<string, object>
+                {
+                    { "tenant_ids", tenantIds },
+                },
+            };
+
+            return await Client.MakeAPIRequest<BulkOperation>(request, cancellationToken);
         }
 
         /// <summary>

@@ -1,7 +1,9 @@
 ﻿namespace Knock
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
@@ -37,12 +39,18 @@
             Tenants = new TenantsResource(this);
             BulkOperations = new BulkOperationsResource(this);
             Messages = new MessagesResource(this);
+            Schedules = new SchedulesResource(this);
+            Audiences = new AudiencesResource(this);
+            WorkflowRecipientRuns = new WorkflowRecipientRunsResource(this);
+            Channels = new ChannelsResource(this);
+            Providers = new ProvidersResource(this);
+            Integrations = new IntegrationsResource(this);
         }
 
         /// <summary>
         /// Describes the .NET SDK version.
         /// </summary>
-        public static string SdkVersion => "0.2.0";
+        public static string SdkVersion => "0.3.0";
 
         /// <summary>
         /// Default timeout for HTTP requests.
@@ -100,6 +108,36 @@
         public MessagesResource Messages { get; }
 
         /// <summary>
+        /// Access to Schedule methods
+        /// </summary>
+        public SchedulesResource Schedules { get; }
+
+        /// <summary>
+        /// Access to Audience methods
+        /// </summary>
+        public AudiencesResource Audiences { get; }
+
+        /// <summary>
+        /// Access to Workflow Recipient Run methods
+        /// </summary>
+        public WorkflowRecipientRunsResource WorkflowRecipientRuns { get; }
+
+        /// <summary>
+        /// Access to Channel methods
+        /// </summary>
+        public ChannelsResource Channels { get; }
+
+        /// <summary>
+        /// Access to chat Provider (Slack, Microsoft Teams) methods
+        /// </summary>
+        public ProvidersResource Providers { get; }
+
+        /// <summary>
+        /// Access to reverse ETL Integration (Census, Hightouch) methods
+        /// </summary>
+        public IntegrationsResource Integrations { get; }
+
+        /// <summary>
         /// The client used to make HTTP requests to the Knock API.
         /// </summary>
         private HttpClient HttpClient { get; }
@@ -152,6 +190,20 @@
             return RequestUtilities.FromJson<T>(data);
         }
 
+        /// <summary>
+        /// Makes a request to the Knock API that does not return a response body.
+        /// </summary>
+        /// <param name="request">The request to make to the Knock API.</param>
+        /// <param name="cancellationToken">A token used to cancel the request.</param>
+        /// <returns>A task that completes when the request succeeds.</returns>
+        public async Task MakeAPIRequest(
+            KnockRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var response = await MakeRawAPIRequest(request, cancellationToken).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+        }
+
         private HttpRequestMessage CreateHttpRequestMessage(KnockRequest request)
         {
             Uri uri = this.BuildUri(request);
@@ -185,18 +237,26 @@
         private Uri BuildUri(KnockRequest request)
         {
             var builder = new StringBuilder();
-            var options = request.Options;
             builder.Append(ApiBaseURL);
             builder.Append(request.Path);
 
-            if (request.Method != HttpMethod.Post && options != null)
+            var queryParts = new List<string>();
+
+            if (request.Method == HttpMethod.Get && request.Options != null)
             {
-                var queryParameters = RequestUtilities.CreateQueryString(options);
-                if (queryParameters != null && queryParameters.Length > 0)
-                {
-                    builder.Append("?");
-                    builder.Append(queryParameters);
-                }
+                queryParts.Add(RequestUtilities.CreateQueryString(request.Options));
+            }
+
+            if (request.QueryParams != null)
+            {
+                queryParts.Add(RequestUtilities.CreateQueryString(request.QueryParams));
+            }
+
+            var queryString = string.Join("&", queryParts.Where(part => !string.IsNullOrEmpty(part)));
+            if (queryString.Length > 0)
+            {
+                builder.Append("?");
+                builder.Append(queryString);
             }
 
             return new Uri(builder.ToString());

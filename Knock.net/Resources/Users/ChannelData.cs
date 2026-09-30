@@ -19,5 +19,11 @@
         /// </summary>
         [JsonProperty("data")]
         public Dictionary<string, object> Data { get; set; }
+
+        /// <summary>
+        /// The provider of the channel, e.g. `push_apns` or `chat_slack`.
+        /// </summary>
+        [JsonProperty("provider")]
+        public string Provider { get; set; }
     }
 }

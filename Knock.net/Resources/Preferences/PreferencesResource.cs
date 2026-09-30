@@ -72,7 +72,7 @@
         /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>A preference set object</returns>
-        [Obsolete("This method is deprecated. Use Users.SetChannelTypePreferences")]
+        [Obsolete("This method is deprecated. Use Users.SetPreferences")]
         public async Task<PreferenceSet> SetChannelType(string userId, string channelType, bool subscribed, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
         {
             var userResource = new UsersResource(Client);
@@ -88,7 +88,7 @@
         /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>A preference set object</returns>
-        [Obsolete("This method is deprecated. Use Users.SetWorkflowPreferences")]
+        [Obsolete("This method is deprecated. Use Users.SetPreferences")]
         public async Task<PreferenceSet> SetWorkflow(string userId, string workflowKey, bool subscribed, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
         {
             var userResource = new UsersResource(Client);
@@ -104,6 +104,7 @@
         /// <param name="preferenceSetId">Optional preference set id, defaults to "default"</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>A preference set object</returns>
+        [Obsolete("This method is deprecated. Use Users.SetPreferences")]
         public async Task<PreferenceSet> SetWorkflow(string userId, string workflowKey, Dictionary<string, bool> channelTypes, string preferenceSetId = DefaultPreferenceSetId, CancellationToken cancellationToken = default)
         {
             var userResource = new UsersResource(Client);

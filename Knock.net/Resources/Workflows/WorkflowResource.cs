@@ -39,7 +39,8 @@ namespace Knock
             if (options != null)
             {
                 request.KnockHeaders = new Dictionary<string, string>();
-                if (options.IdempotencyKey != null) {
+                if (options.IdempotencyKey != null)
+                {
                     request.KnockHeaders.Add("Idempotency-Key", options.IdempotencyKey);
                 }
             }
@@ -54,7 +55,8 @@ namespace Knock
         /// <param name="cancelWorkflowOptions">The information about the cancellation</param>
         /// <param name="cancellationToken">An optional token to cancel the request</param>
         /// <returns>Response dictionary</returns>
-        public async Task<Response> Cancel(string workflowKey, CancelWorkflow cancelWorkflowOptions, CancellationToken cancellationToken = default) {
+        public async Task<Response> Cancel(string workflowKey, CancelWorkflow cancelWorkflowOptions, CancellationToken cancellationToken = default)
+        {
             var request = new KnockRequest
             {
                 Path = $"/workflows/{workflowKey}/cancel",
@@ -74,15 +76,7 @@ namespace Knock
         public async Task<List<Schedule>> CreateSchedules(string workflowKey, CreateSchedules createSchedulesOptions)
         {
             createSchedulesOptions.Workflow = workflowKey;
-
-            var request = new KnockRequest
-            {
-                Path = $"/schedules",
-                Method = HttpMethod.Post,
-                Options = createSchedulesOptions,
-            };
-
-            return await Client.MakeAPIRequest<List<Schedule>>(request);
+            return await Client.Schedules.Create(createSchedulesOptions);
         }
 
         /// <summary>
@@ -94,15 +88,7 @@ namespace Knock
         public async Task<List<Schedule>> UpdateSchedules(List<String> scheduleIds, UpdateSchedules updateSchedulesOptions)
         {
             updateSchedulesOptions.ScheduleIds = scheduleIds;
-
-            var request = new KnockRequest
-            {
-                Path = $"/schedules",
-                Method = HttpMethod.Put,
-                Options = updateSchedulesOptions,
-            };
-
-            return await Client.MakeAPIRequest<List<Schedule>>(request);
+            return await Client.Schedules.Update(updateSchedulesOptions);
         }
 
         /// <summary>
@@ -112,17 +98,7 @@ namespace Knock
         /// <returns>List of deleted schedules</returns>
         public async Task<List<Schedule>> DeleteSchedules(List<String> scheduleIds)
         {
-            var request = new KnockRequest
-            {
-                Path = $"/schedules",
-                Method = HttpMethod.Delete,
-                Options = new Dictionary<String, List<String>> {
-                    { "schedule_ids", scheduleIds}
-                }
-
-            };
-
-            return await Client.MakeAPIRequest<List<Schedule>>(request);
+            return await Client.Schedules.Delete(scheduleIds);
         }
 
         /// <summary>
@@ -133,21 +109,7 @@ namespace Knock
         /// <returns>A paginated Schedule response.</returns>
         public async Task<PaginatedResponse<Schedule>> ListSchedules(String workflowKey, Dictionary<string, object> options = null)
         {
-            if (options == null)
-            {
-                options = new Dictionary<string, object> { { "workflow", workflowKey } };
-            } else {
-                options.Add("workflow", workflowKey);
-            }
-
-            var request = new KnockRequest
-            {
-                Path = $"/schedules",
-                Method = HttpMethod.Get,
-                Options = options
-            };
-
-            return await Client.MakeAPIRequest<PaginatedResponse<Schedule>>(request);
+            return await Client.Schedules.List(workflowKey, options);
         }
     }
 }
